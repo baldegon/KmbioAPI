@@ -7,5 +7,6 @@ namespace KmbioAPI.Controllers
     [ApiController]
     public class ConvertibilidadController : ControllerBase
     {
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using KmbioAPI.Models;
 using KmbioAPI.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KmbioAPI.Services
 {
@@ -12,7 +13,7 @@ namespace KmbioAPI.Services
             _context = context;
         }
 
-        public IEnumerable<GastoDTO> GetAllGastos()
+        public Task<ActionResult<GastoDTO>> GetAllGastos()
         {
             return _context.Gastos.Select(g => new GastoDTO
             {
