@@ -26,7 +26,7 @@ namespace KmbioAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<AuthResponseDTO> RegistrarAsync(RegistrarUusarioDTO dto)
+        public async Task<AuthResponseDTO> RegistrarAsync(RegistrarUsarioDTO dto)
         {
             if (await _usuarioRepository.ExisteEmailAsync(dto.Email))
             {

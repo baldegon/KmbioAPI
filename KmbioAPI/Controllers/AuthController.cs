@@ -1,7 +1,9 @@
 ﻿using KmbioAPI.DTOs;
 using KmbioAPI.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace KmbioAPI.Controllers
 {
@@ -72,7 +74,21 @@ namespace KmbioAPI.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UsuarioDTO>> ObtenerPerfil()
     {
-
+        try
+        {
+            var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var usuario = await _authService.ObtenerPerfilAsync(usuarioId);
+            return Ok(usuario);
+        }
+        catch (NotfoundException ex)
+        {
+            return NotFound(new { mensaje = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al obtener el perfil del usuario");
+            return StatusCode(500, new { mensaje = "Error interno del servidor" });
+        }
     }
 
 }
