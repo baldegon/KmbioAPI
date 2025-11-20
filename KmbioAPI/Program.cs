@@ -1,3 +1,13 @@
+using KmbioAPI.Models;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using KmbioAPI.Authentication;
+using KmbioAPI.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +15,61 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new String[] { }
+        }
+    });
+});
+
+builder.Services.AddDbContext<KmbioDbContext>();
+builder.Services.AddIdentityCore<AppUser>()
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<KmbioDbContext>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(Options =>
+{
+    var secret = builder.Configuration["JwtConfig:Secret"];
+    var issuer = builder.Configuration["JwtConfig:ValidIssuer"];
+    var audience = builder.Configuration["JwtConfig:ValidAudiences"];
+    if (secret is null || issuer is null || audience is null)
+    {
+        throw new ApplicationException("Jwt is not set in the configuration");
+    }
+    Options.SaveToken = true;
+    Options.RequireHttpsMetadata = false;
+    Options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret))
+    };
+});
 
 
 
@@ -16,6 +80,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+    var dbContext = services.GetRequiredService<KmbioDbContext>();
+    dbContext.Database.EnsureCreated();
 }
 
 app.UseHttpsRedirection();

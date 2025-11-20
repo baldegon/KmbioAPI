@@ -21,7 +21,7 @@ namespace KmbioAPI.Controllers
         }
 
         //Registro de usuario
-
+        /*
         [HttpPost("registro")]
         [ProducesResponseType(typeof(AuthResponseDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -89,6 +89,6 @@ namespace KmbioAPI.Controllers
             _logger.LogError(ex, "Error al obtener el perfil del usuario");
             return StatusCode(500, new { mensaje = "Error interno del servidor" });
         }
+        */
     }
-
 }

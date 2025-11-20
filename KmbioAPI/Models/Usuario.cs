@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace KmbioAPI.Models;
 
-public partial class Usuario
+public partial class Usuario : IdentityUser
 {
     public int Id { get; set; }
 

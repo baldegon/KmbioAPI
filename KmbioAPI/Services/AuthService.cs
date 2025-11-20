@@ -14,8 +14,8 @@ namespace KmbioAPI.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
-
+        //private readonly IMapper _mapper;
+        /*
         public AuthService(
             IUsuarioRepository usuarioRepository,
             IConfiguration configuration,
@@ -89,5 +89,6 @@ namespace KmbioAPI.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        */
     }
 }

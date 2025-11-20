@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KmbioAPI.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace KmbioAPI.Models;
@@ -47,12 +48,14 @@ public partial class KmbioDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=KmbioDB;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=false");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        /*
         modelBuilder.Entity<AspNetRole>(entity =>
         {
             entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
@@ -217,7 +220,8 @@ public partial class KmbioDbContext : DbContext
 
             entity.HasIndex(e => e.Username, "IX_Usuarios_Username").IsUnique();
         });
-
+        */
+        
         OnModelCreatingPartial(modelBuilder);
     }
 

@@ -1,6 +1,9 @@
 ﻿using KmbioAPI.Models;
 using KmbioAPI.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.WebSockets;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace KmbioAPI.Services
 {
@@ -13,16 +16,18 @@ namespace KmbioAPI.Services
             _context = context;
         }
 
-        public Task<ActionResult<GastoDTO>> GetAllGastos()
+        public async Task<ActionResult<List<GastoDTO>>> GetAllGastos()
         {
-            return _context.Gastos.Select(g => new GastoDTO
+            var result = await _context.Gastos.Select(g => new GastoDTO
             {
                 Id = g.Id,
                 Descripcion = g.Descripcion,
                 Monto = g.Monto,
                 Fecha = g.Fecha,
                 CategoriaId = g.CategoriaId
-            }).ToList();
+            }).ToListAsync();
+
+            return result;
         }
     }
 }

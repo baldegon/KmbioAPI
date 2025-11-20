@@ -8,7 +8,7 @@ namespace KmbioAPI.Repositories.Usuario
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly KmbioDbContext _context;
-
+        /*
         public UsuarioRepository(KmbioDbContext context)
         {
             _context = context;
@@ -40,5 +40,6 @@ namespace KmbioAPI.Repositories.Usuario
             return await _context.Usuarios
                 .AnyAsync(u => u.Email.ToLower() == email.ToLower());
         }
+        */
     }
 }

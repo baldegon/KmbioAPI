@@ -5,9 +5,10 @@ namespace KmbioAPI.Interfaces
 {
     public class IAuthService
     {
+        /*
         Task<AuthResponseDTO> RegistrarAsync(RegistrarUsuarioDTO dto);
         Task<AuthResponseDTO> LoginAsync(LoginDTO dto);
         Task<UsuarioDTO> ObtenerPerfilAsync(int usuarioId);
-
+        */
     }
 }
