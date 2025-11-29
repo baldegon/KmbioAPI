@@ -1,35 +1,25 @@
 ﻿using KmbioAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace KmbioAPI.DTOs
 {
     public class GastoDTO
     {
-        public int Id { get; set; }
-
-        public int UserId { get; set; }
-
-        public int MetodoPagoId { get; set; }
-
+        [Required]
         public decimal Monto { get; set; }
-
+        [Required]
         public string Currency { get; set; } = null!;
-
         public string? Descripcion { get; set; }
-
+        [Required]
         public DateTime Fecha { get; set; }
-
+        [Required]
         public int? CategoriaId { get; set; }
-
-        public string Status { get; set; } = null!;
-
-        public DateTime CreatedAt { get; set; }
-
+        [Required]
         public int MetodoDePagoId { get; set; }
-
-        public string  NombreCategoria { get; set; }
-
+        public string NombreCategoria { get; set; } = null!;
+        
         public string NombreMetodoDePago { get; set; } = null!;
-
         public string NombreUser { get; set; } = null!;
+
     }
 }

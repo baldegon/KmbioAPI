@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using KmbioAPI.Authentication;
 using KmbioAPI.Context;
+using Microsoft.Identity;
+using KmbioAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,10 +44,12 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<KmbioDbContext>();
-builder.Services.AddIdentityCore<AppUser>()
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<KmbioDbContext>();
+builder.Services.AddDbContext<KmbioDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Conexion")));
+
+builder.Services.AddIdentity<Usuario, IdentityRole>()
+    .AddEntityFrameworkStores<KmbioDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -66,11 +71,12 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidAudience = issuer,
+        ValidAudience = audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret))
     };
 });
 
+builder.Services.AddScoped<GastoService>();
 
 
 var app = builder.Build();
@@ -86,7 +92,6 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
     var dbContext = services.GetRequiredService<KmbioDbContext>();
-    dbContext.Database.EnsureCreated();
 }
 
 app.UseHttpsRedirection();

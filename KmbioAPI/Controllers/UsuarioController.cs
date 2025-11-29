@@ -15,11 +15,5 @@ namespace KmbioAPI.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IEnumerable<Usuario> Get()
-        {
-            return _context.Usuarios.ToList();
-        }
-
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KmbioAPI.Migrations
 {
     [DbContext(typeof(KmbioDbContext))]
-    [Migration("20251116013501_adding-auth-feature")]
-    partial class addingauthfeature
+    [Migration("20251129204634_AddingIdentityConfig")]
+    partial class AddingIdentityConfig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,203 +24,6 @@ namespace KmbioAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AspNetUserRole", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("KmbioAPI.Models.AspNetRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "NormalizedName" }, "RoleNameIndex")
-                        .IsUnique()
-                        .HasFilter("([NormalizedName] IS NOT NULL)");
-
-                    b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("KmbioAPI.Models.AspNetRoleClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "RoleId" }, "IX_AspNetRoleClaims_RoleId");
-
-                    b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "NormalizedEmail" }, "EmailIndex");
-
-                    b.HasIndex(new[] { "NormalizedUserName" }, "UserNameIndex")
-                        .IsUnique()
-                        .HasFilter("([NormalizedUserName] IS NOT NULL)");
-
-                    b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "UserId" }, "IX_AspNetUserClaims_UserId");
-
-                    b.ToTable("AspNetUserClaims");
-                });
-
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUserLogin", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex(new[] { "UserId" }, "IX_AspNetUserLogins_UserId");
-
-                    b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUserToken", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens");
-                });
 
             modelBuilder.Entity("KmbioAPI.Models.Auditoria", b =>
                 {
@@ -255,9 +58,12 @@ namespace KmbioAPI.Migrations
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "UsuarioId" }, "IX_Auditorias_UsuarioId");
+                    b.HasIndex("UsuarioId1");
 
                     b.ToTable("Auditorias");
                 });
@@ -271,7 +77,7 @@ namespace KmbioAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("CapitalTotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
@@ -288,9 +94,12 @@ namespace KmbioAPI.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "UsuarioId" }, "IX_Capitales_UsuarioId");
+                    b.HasIndex("UsuarioId1");
 
                     b.ToTable("Capitales");
                 });
@@ -313,9 +122,12 @@ namespace KmbioAPI.Migrations
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "UsuarioId" }, "IX_Categorias_UsuarioId");
+                    b.HasIndex("UsuarioId1");
 
                     b.ToTable("Categorias");
                 });
@@ -340,7 +152,7 @@ namespace KmbioAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Tasa")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -378,7 +190,7 @@ namespace KmbioAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -387,13 +199,16 @@ namespace KmbioAPI.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "CategoriaId" }, "IX_Gastos_CategoriaId");
+                    b.HasIndex("CategoriaId");
 
-                    b.HasIndex(new[] { "MetodoDePagoId" }, "IX_Gastos_MetodoDePagoId");
+                    b.HasIndex("MetodoDePagoId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Gastos_UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Gastos");
                 });
@@ -433,7 +248,7 @@ namespace KmbioAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("NextRun")
                         .HasColumnType("datetime2");
@@ -447,13 +262,16 @@ namespace KmbioAPI.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "CategoriaId" }, "IX_GastosRecurrentes_CategoriaId");
+                    b.HasIndex("CategoriaId");
 
-                    b.HasIndex(new[] { "MetodoDePagoId" }, "IX_GastosRecurrentes_MetodoDePagoId");
+                    b.HasIndex("MetodoDePagoId");
 
-                    b.HasIndex(new[] { "UsuarioId" }, "IX_GastosRecurrentes_UsuarioId");
+                    b.HasIndex("UsuarioId1");
 
                     b.ToTable("GastosRecurrentes");
                 });
@@ -504,11 +322,14 @@ namespace KmbioAPI.Migrations
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "UsuarioId" }, "IX_MetodosDePago_UsuarioId");
+                    b.HasIndex("UsuarioId1");
 
-                    b.ToTable("MetodosDePago", (string)null);
+                    b.ToTable("MetodosDePagos");
                 });
 
             modelBuilder.Entity("KmbioAPI.Models.Recomendacione", b =>
@@ -520,7 +341,7 @@ namespace KmbioAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -537,22 +358,29 @@ namespace KmbioAPI.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "PresupuestoId" }, "IX_Recomendaciones_PresupuestoId");
+                    b.HasIndex("PresupuestoId");
 
-                    b.HasIndex(new[] { "UsuarioId" }, "IX_Recomendaciones_UsuarioId");
+                    b.HasIndex("UsuarioId1");
 
                     b.ToTable("Recomendaciones");
                 });
 
             modelBuilder.Entity("KmbioAPI.Models.Usuario", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -561,95 +389,215 @@ namespace KmbioAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "f4013b4d-de23-4022-aad6-55a32fdde745",
+                            ConcurrencyStamp = "f4013b4d-de23-4022-aad6-55a32fdde745",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "d1ef1e54-2ac7-4438-a052-8072b5a202a0",
+                            ConcurrencyStamp = "d1ef1e54-2ac7-4438-a052-8072b5a202a0",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Email" }, "IX_Usuarios_Email")
-                        .IsUnique();
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex(new[] { "Username" }, "IX_Usuarios_Username")
-                        .IsUnique();
-
-                    b.ToTable("Usuarios");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("AspNetUserRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("KmbioAPI.Models.AspNetRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasOne("KmbioAPI.Models.AspNetUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("KmbioAPI.Models.AspNetRoleClaim", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("KmbioAPI.Models.AspNetRole", "Role")
-                        .WithMany("AspNetRoleClaims")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("Role");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUserClaim", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("KmbioAPI.Models.AspNetUser", "User")
-                        .WithMany("AspNetUserClaims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("User");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUserLogin", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("KmbioAPI.Models.AspNetUser", "User")
-                        .WithMany("AspNetUserLogins")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("User");
-                });
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUserToken", b =>
-                {
-                    b.HasOne("KmbioAPI.Models.AspNetUser", "User")
-                        .WithMany("AspNetUserTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("User");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("KmbioAPI.Models.Auditoria", b =>
                 {
                     b.HasOne("KmbioAPI.Models.Usuario", "Usuario")
                         .WithMany("Auditoria")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId1");
 
                     b.Navigation("Usuario");
                 });
@@ -658,9 +606,7 @@ namespace KmbioAPI.Migrations
                 {
                     b.HasOne("KmbioAPI.Models.Usuario", "Usuario")
                         .WithMany("Capitales")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId1");
 
                     b.Navigation("Usuario");
                 });
@@ -669,7 +615,7 @@ namespace KmbioAPI.Migrations
                 {
                     b.HasOne("KmbioAPI.Models.Usuario", "Usuario")
                         .WithMany("Categoria")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId1");
 
                     b.Navigation("Usuario");
                 });
@@ -678,8 +624,7 @@ namespace KmbioAPI.Migrations
                 {
                     b.HasOne("KmbioAPI.Models.Categoria", "Categoria")
                         .WithMany("Gastos")
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("CategoriaId");
 
                     b.HasOne("KmbioAPI.Models.MetodosDePago", "MetodoDePago")
                         .WithMany("Gastos")
@@ -689,9 +634,7 @@ namespace KmbioAPI.Migrations
 
                     b.HasOne("KmbioAPI.Models.Usuario", "User")
                         .WithMany("Gastos")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Categoria");
 
@@ -712,9 +655,7 @@ namespace KmbioAPI.Migrations
 
                     b.HasOne("KmbioAPI.Models.Usuario", "Usuario")
                         .WithMany("GastosRecurrentes")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId1");
 
                     b.Navigation("Categoria");
 
@@ -727,7 +668,7 @@ namespace KmbioAPI.Migrations
                 {
                     b.HasOne("KmbioAPI.Models.Usuario", "Usuario")
                         .WithMany("MetodosDePagos")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId1");
 
                     b.Navigation("Usuario");
                 });
@@ -740,27 +681,62 @@ namespace KmbioAPI.Migrations
 
                     b.HasOne("KmbioAPI.Models.Usuario", "Usuario")
                         .WithMany("Recomendaciones")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId1");
 
                     b.Navigation("Presupuesto");
 
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("KmbioAPI.Models.AspNetRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Navigation("AspNetRoleClaims");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("KmbioAPI.Models.AspNetUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Navigation("AspNetUserClaims");
+                    b.HasOne("KmbioAPI.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("AspNetUserLogins");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("KmbioAPI.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("AspNetUserTokens");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KmbioAPI.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("KmbioAPI.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("KmbioAPI.Models.Capitale", b =>

@@ -16,6 +16,28 @@ namespace KmbioAPI.Services
             _context = context;
         }
 
+        public async Task<Gasto> RegistrarGastoAsync(GastoRegistroDTO dto, string userId)
+        {
+            var nuevoGasto = new Gasto
+            {
+                UserId = int.Parse(userId),
+                Monto = dto.Monto,
+                Currency = dto.Currency,
+                Descripcion = dto.Descripcion,
+                Fecha = dto.Fecha,
+                CategoriaId = dto.CategoriaId,
+                MetodoDePagoId = dto.MetodoDePagoId,
+                Status = "COMPLETADO",
+                CreatedAt = DateTime.UtcNow
+            }
+
+            _context.Gastos.Add(nuevoGasto);
+            await _context.SaveChangesAsync();
+
+            return nuevoGasto;
+
+        }
+
         public async Task<ActionResult<List<GastoDTO>>> GetAllGastos()
         {
             var result = await _context.Gastos.Select(g => new GastoDTO

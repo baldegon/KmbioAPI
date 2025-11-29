@@ -29,7 +29,7 @@ namespace KmbioAPI.Controllers
 
                 var user = new Usuario()
                 {
-                    Name = model.Nombre,
+                    UserName = model.Nombre,
                     Email = model.Email,
                 };
                 var result = await userManager.CreateAsync(user, model.Password);

@@ -6,13 +6,6 @@ namespace KmbioAPI.Models;
 
 public partial class Usuario : IdentityUser
 {
-    public int Id { get; set; }
-
-    public string Username { get; set; } = null!;
-
-    public string Email { get; set; } = null!;
-
-    public string PasswordHash { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }
 
