@@ -35,7 +35,7 @@ namespace KmbioAPI.Services
 
             var nuevoGasto = new Gasto
             {
-                UserId = userIdInterno,
+                UserId = identityUserId,
                 Monto = dto.Monto,
                 Currency = dto.Currency,
                 Descripcion = dto.Descripcion,
@@ -53,18 +53,5 @@ namespace KmbioAPI.Services
 
         }
 
-        public async Task<ActionResult<List<GastoDTO>>> GetAllGastos()
-        {
-            var result = await _context.Gastos.Select(g => new GastoDTO
-            {
-                Id = g.Id,
-                Descripcion = g.Descripcion,
-                Monto = g.Monto,
-                Fecha = g.Fecha,
-                CategoriaId = g.CategoriaId
-            }).ToListAsync();
-
-            return result;
-        }
     }
 }

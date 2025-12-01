@@ -48,26 +48,5 @@ namespace KmbioAPI.Controllers
         }
 
 
-        [HttpGet]
-        [Route("Gastos")]
-        public async Task<ActionResult<List<GastoDTO>>> GetAllGastos()
-        {
-            var gastos = await _context.Gastos
-                .Select(g => new GastoDTO
-                {
-                    Id = g.Id,
-                    UserId = g.UserId,
-                    MetodoPagoId = g.MetodoPagoId,
-                    Monto = g.Monto,
-                    Currency = g.Currency,
-                    Descripcion = g.Descripcion,
-                    Fecha = g.Fecha,
-                    CategoriaId = g.CategoriaId,
-                    Status = g.Status,
-                    CreatedAt = g.CreatedAt
-                })
-                .ToListAsync();
-            return Ok();
-        }
     }
 }
