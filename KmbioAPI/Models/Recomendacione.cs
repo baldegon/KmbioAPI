@@ -17,7 +17,7 @@ public partial class Recomendacione
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual Capitale? Presupuesto { get; set; }
+    public virtual Presupuesto? Presupuesto { get; set; }
 
     public virtual Usuario Usuario { get; set; } = null!;
 }
