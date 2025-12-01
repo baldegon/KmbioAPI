@@ -7,9 +7,7 @@ public partial class Gasto
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
-
-    public int MetodoPagoId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public decimal Monto { get; set; }
 

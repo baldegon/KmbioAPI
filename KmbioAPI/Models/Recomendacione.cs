@@ -7,7 +7,7 @@ public partial class Recomendacione
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public int? PresupuestoId { get; set; }
 
@@ -16,8 +16,6 @@ public partial class Recomendacione
     public string? TipoDeInversion { get; set; }
 
     public DateTime CreatedAt { get; set; }
-
-    public int UsuarioId { get; set; }
 
     public virtual Capitale? Presupuesto { get; set; }
 

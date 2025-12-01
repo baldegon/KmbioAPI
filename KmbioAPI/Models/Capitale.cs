@@ -7,7 +7,7 @@ public partial class Capitale
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public decimal CapitalTotal { get; set; }
 
@@ -16,8 +16,6 @@ public partial class Capitale
     public DateTime LastUpdate { get; set; }
 
     public string? Note { get; set; }
-
-    public int UsuarioId { get; set; }
 
     public virtual ICollection<Recomendacione> Recomendaciones { get; set; } = new List<Recomendacione>();
 

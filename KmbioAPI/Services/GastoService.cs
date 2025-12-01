@@ -4,23 +4,38 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace KmbioAPI.Services
 {
     public class GastoService
     {
         private readonly KmbioDbContext _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public GastoService(KmbioDbContext context)
+        public GastoService(KmbioDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public async Task<Gasto> RegistrarGastoAsync(GastoRegistroDTO dto, string userId)
+        public async Task<Gasto> RegistrarGastoAsync(GastoRegistroDTO dto, string identityUserId)
         {
+            var user = await _userManager.FindByIdAsync(identityUserId);
+
+            if(user == null)
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            if(!int.TryParse(identityUserId, out int userIdInterno))
+            {
+                throw new Exception("ID de usuario inválido");
+            }
+
             var nuevoGasto = new Gasto
             {
-                UserId = int.Parse(userId),
+                UserId = userIdInterno,
                 Monto = dto.Monto,
                 Currency = dto.Currency,
                 Descripcion = dto.Descripcion,
@@ -29,7 +44,7 @@ namespace KmbioAPI.Services
                 MetodoDePagoId = dto.MetodoDePagoId,
                 Status = "COMPLETADO",
                 CreatedAt = DateTime.UtcNow
-            }
+            };
 
             _context.Gastos.Add(nuevoGasto);
             await _context.SaveChangesAsync();

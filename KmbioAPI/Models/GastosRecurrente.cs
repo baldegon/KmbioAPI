@@ -7,7 +7,7 @@ public partial class GastosRecurrente
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public decimal Monto { get; set; }
 
@@ -25,11 +25,7 @@ public partial class GastosRecurrente
 
     public int? CategoriaId { get; set; }
 
-    public int? MetodoPagoId { get; set; }
-
     public DateTime CreatedAt { get; set; }
-
-    public int UsuarioId { get; set; }
 
     public int? MetodoDePagoId { get; set; }
 

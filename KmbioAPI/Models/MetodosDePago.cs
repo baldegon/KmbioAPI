@@ -9,17 +9,15 @@ public partial class MetodosDePago
 
     public string NombreMetodo { get; set; } = null!;
 
-    public int? UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public string? Details { get; set; }
 
     public bool Active { get; set; }
 
-    public int? UsuarioId { get; set; }
-
     public virtual ICollection<Gasto> Gastos { get; set; } = new List<Gasto>();
 
     public virtual ICollection<GastosRecurrente> GastosRecurrentes { get; set; } = new List<GastosRecurrente>();
 
-    public virtual Usuario? Usuario { get; set; }
+    public virtual Usuario? Usuario { get; set; } = null!;
 }

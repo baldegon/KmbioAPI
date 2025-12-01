@@ -7,7 +7,7 @@ public partial class Auditoria
 {
     public int Id { get; set; }
 
-    public int? UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public string Accion { get; set; } = null!;
 
@@ -21,7 +21,5 @@ public partial class Auditoria
 
     public string? Meta { get; set; }
 
-    public int? UsuarioId { get; set; }
-
-    public virtual Usuario? Usuario { get; set; }
+    public virtual Usuario? Usuario { get; set; } = null!;
 }
