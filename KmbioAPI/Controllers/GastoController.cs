@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using KmbioAPI.Services;
 using KmbioAPI.DTOs;
-using KmbioAPI.Context;
 using KmbioAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Reflection.Metadata.Ecma335;
 
 namespace KmbioAPI.Controllers
 {
@@ -27,6 +27,7 @@ namespace KmbioAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RegistrarGasto([FromBody] GastoRegistroDTO dto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -36,9 +37,21 @@ namespace KmbioAPI.Controllers
                 return Unauthorized("Usuario no autenticado");
             }
 
-            var nuevoGastoModel = await _gastoService.RegistrarGastoAsync(dto, userId);
+            try
+            {
+                var nuevoGastoModel = await _gastoService.RegistrarGastoAsync(dto, userId);
 
-            return CreatedAtAction(nameof(GetGasto), new { id = nuevoGastoModel.Id }, nuevoGastoModel);
+                return CreatedAtAction(nameof(GetGasto), new { id = nuevoGastoModel.Id }, nuevoGastoModel);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "occurio un error interno al procesar el gasto" });
+            }
+
         }
 
         [HttpGet("{id}")]

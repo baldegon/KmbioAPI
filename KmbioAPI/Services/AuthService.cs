@@ -1,6 +1,5 @@
 ﻿using KmbioAPI.DTOs;
 using KmbioAPI.Interfaces;
-using KmbioAPI.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.ComponentModel.DataAnnotations;

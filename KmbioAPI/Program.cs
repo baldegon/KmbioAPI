@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using KmbioAPI.Authentication;
-using KmbioAPI.Context;
 using Microsoft.Identity;
 using KmbioAPI.Services;
 
@@ -77,6 +76,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<GastoService>();
+builder.Services.AddScoped<PresupuestoService>();
 
 
 var app = builder.Build();
@@ -92,6 +92,24 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
     var dbContext = services.GetRequiredService<KmbioDbContext>();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<KmbioDbContext>();
+        var userManager = services.GetRequiredService<UserManager<Usuario>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        await KmbioAPI.Data.KmbioSeeder.SeedAsync(context, userManager, roleManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrio un error durante el seeding");
+    }
 }
 
 app.UseHttpsRedirection();

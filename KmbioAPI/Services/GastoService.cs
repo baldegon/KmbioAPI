@@ -12,25 +12,32 @@ namespace KmbioAPI.Services
     {
         private readonly KmbioDbContext _context;
         private readonly UserManager<Usuario> _userManager;
+        private readonly PresupuestoService _presupuestoService;
 
-        public GastoService(KmbioDbContext context, UserManager<Usuario> userManager)
+        public GastoService(KmbioDbContext context, UserManager<Usuario> userManager, PresupuestoService presupuestoService)
         {
             _context = context;
             _userManager = userManager;
+            _presupuestoService = presupuestoService;
         }
 
         public async Task<Gasto> RegistrarGastoAsync(GastoRegistroDTO dto, string identityUserId)
         {
-            var user = await _userManager.FindByIdAsync(identityUserId);
 
-            if(user == null)
-            {
-                throw new Exception("Usuario no encontrado");
-            }
+            var presupuestoActivo = await _context.Presupuestos
+                .FirstOrDefaultAsync(p => p.UserId == identityUserId &&
+                                    dto.Fecha >= p.FechaInicio &&
+                                    dto.Fecha <= p.FechaFin);
 
-            if(!int.TryParse(identityUserId, out int userIdInterno))
+            if(presupuestoActivo != null)
             {
-                throw new Exception("ID de usuario inválido");
+                decimal gastadoActual = await _presupuestoService
+                    .ObtenerGastoTotalEnPeriodo(identityUserId, presupuestoActivo.FechaInicio, presupuestoActivo.FechaFin);
+
+                if((gastadoActual + dto.Monto) > presupuestoActivo.MontoLimite)
+                {
+                    throw new Exception($"Cuidado este gasto puede exceder tu presupuesto de {presupuestoActivo.MontoLimite:C}");
+                }
             }
 
             var nuevoGasto = new Gasto
@@ -47,6 +54,16 @@ namespace KmbioAPI.Services
             };
 
             _context.Gastos.Add(nuevoGasto);
+
+            var capital = await _context.Capitales.FirstOrDefaultAsync(c => c.UserId == identityUserId);
+
+            if (capital != null)
+            {
+                capital.CapitalTotal -= dto.Monto;
+                capital.LastUpdate = DateTime.UtcNow;
+                _context.Capitales.Update(capital);
+            }
+
             await _context.SaveChangesAsync();
 
             return nuevoGasto;

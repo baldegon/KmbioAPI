@@ -50,7 +50,7 @@ namespace KmbioAPI.Controllers
         {
             var secret = _configuration["JwtConfig:Secret"];
             var issuer = _configuration["JwtConfig:ValidIssuer"];
-            var audience = _configuration["JwtConfig:ValidAudience"];
+            var audience = _configuration["JwtConfig:ValidAudiences"];
             if (secret is null || issuer is null || audience is null)
             {
                 throw new ApplicationException("Jwt is not set in the configuration");

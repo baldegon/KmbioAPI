@@ -493,15 +493,15 @@ namespace KmbioAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1c55b9ba-471d-49af-ba32-e9fe6fc105dd",
-                            ConcurrencyStamp = "1c55b9ba-471d-49af-ba32-e9fe6fc105dd",
+                            Id = "1571373e-a8e4-41d5-bb4e-cd9f376c9f7f",
+                            ConcurrencyStamp = "1571373e-a8e4-41d5-bb4e-cd9f376c9f7f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "070bdb9e-d484-4f26-9223-9f451dd715ff",
-                            ConcurrencyStamp = "070bdb9e-d484-4f26-9223-9f451dd715ff",
+                            Id = "8a55199e-ab7d-4c51-906e-d2ac89dca0a1",
+                            ConcurrencyStamp = "8a55199e-ab7d-4c51-906e-d2ac89dca0a1",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });

@@ -63,7 +63,22 @@ public partial class KmbioDbContext : IdentityDbContext<Usuario, IdentityRole, s
             }
         );
 
+        var decimalProps = new[]
+        {
+            (typeof(Gasto), "Monto"),
+            (typeof(Capitale), "CapitalTotal"),
+            (typeof(Presupuesto), "MontoLimite"),
+            (typeof(Recomendacione), "Balance"),
+            (typeof(Convertibilidade), "Tasa"),
+            (typeof(GastosRecurrente), "Monto")
+        };
 
+        foreach(var (type, propName) in decimalProps)
+        {
+            modelBuilder.Entity(type)
+                .Property(propName)
+                .HasColumnType("decimal(18,2)");
+        }
 
 
         
